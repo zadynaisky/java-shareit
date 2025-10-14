@@ -10,6 +10,7 @@ import ru.practicum.shareit.item.model.Item;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static java.lang.Boolean.TRUE;
 import static java.util.Collections.EMPTY_LIST;
@@ -43,8 +44,8 @@ public class InMemoryItemRepository implements ItemRepository {
                 .values()
                 .stream()
                 .filter(x -> TRUE.equals(x.getAvailable()))
-                .filter(x -> x.getName().toLowerCase().contains(text.toLowerCase()) ||
-                        x.getDescription().toLowerCase().contains(text.toLowerCase()))
+                .filter(x -> (x.getName() != null && x.getName().toLowerCase().contains(text.toLowerCase())) ||
+                        (x.getDescription() != null && x.getDescription().toLowerCase().contains(text.toLowerCase())))
                 .sorted()
                 .collect(toList());
     }
