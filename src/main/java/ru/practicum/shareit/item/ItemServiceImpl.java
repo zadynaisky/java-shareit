@@ -36,7 +36,7 @@ public class ItemServiceImpl {
         var item = itemRepository.findById(itemId);
         if (item == null)
             throw new NotFoundException("Item not found");
-        if (item.getOwnerId() != ownerId)
+        if (!item.getOwnerId().equals(ownerId))
             throw new ValidationException("Owner id mismatch");
         return itemRepository.update(itemDto, itemId);
     }

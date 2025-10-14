@@ -28,7 +28,7 @@ public class InMemoryItemRepository implements ItemRepository {
         return items
                 .values()
                 .stream()
-                .filter(x -> x.getOwnerId() == userId)
+                .filter(x -> x.getOwnerId().equals(userId))
                 .sorted()
                 .collect(toList());
     }
