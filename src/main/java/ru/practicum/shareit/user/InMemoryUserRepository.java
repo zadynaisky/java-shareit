@@ -18,7 +18,6 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 public class InMemoryUserRepository implements UserRepository {
-    private final UserDtoMapper userDtoMapper;
 
     private final Map<Integer, User> users = new HashMap<>();
     private int nextId = 1;
@@ -39,7 +38,7 @@ public class InMemoryUserRepository implements UserRepository {
     public User create(UserCreateDto userCreateDto) {
         if (isEmailExists(userCreateDto.getEmail()))
             throw new EmailAlreadyExistsException("email already exists");
-        var user = userDtoMapper.toUser(userCreateDto);
+        var user = UserDtoMapper.toUser(userCreateDto);
         user.setId(getNextId());
         users.put(user.getId(), user);
         return user;

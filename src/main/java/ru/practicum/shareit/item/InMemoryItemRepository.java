@@ -18,7 +18,6 @@ import static java.util.stream.Collectors.toList;
 @Component
 @RequiredArgsConstructor
 public class InMemoryItemRepository implements ItemRepository {
-    private final ItemDtoMapper itemDtoMapper;
 
     private final Map<Integer, Item> items = new HashMap<>();
     private int nextId = 1;
@@ -39,12 +38,14 @@ public class InMemoryItemRepository implements ItemRepository {
             return EMPTY_LIST;
         }
 
+        var textLower = text.toLowerCase();
+
         return items
                 .values()
                 .stream()
                 .filter(x -> TRUE.equals(x.getAvailable()))
-                .filter(x -> (x.getName() != null && x.getName().toLowerCase().contains(text.toLowerCase())) ||
-                        (x.getDescription() != null && x.getDescription().toLowerCase().contains(text.toLowerCase())))
+                .filter(x -> (x.getName() != null && x.getName().toLowerCase().contains(textLower)) ||
+                        (x.getDescription() != null && x.getDescription().toLowerCase().contains(textLower)))
                 .sorted()
                 .collect(toList());
     }
@@ -57,7 +58,7 @@ public class InMemoryItemRepository implements ItemRepository {
     @Override
     public Item create(ItemCreateDto itemCreateDto, Integer ownerId) {
         //добавить проверку, что пользователь существует!
-        var item = itemDtoMapper.toItem(itemCreateDto, ownerId);
+        var item = ItemDtoMapper.toItem(itemCreateDto, ownerId);
         var id = getNextId();
         item.setId(id);
         items.put(id, item);

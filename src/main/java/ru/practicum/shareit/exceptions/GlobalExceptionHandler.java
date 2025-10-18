@@ -18,4 +18,10 @@ public class GlobalExceptionHandler {
     public ErrorResponse handleNotFoundException(NotFoundException e) {
         return new ErrorResponse("not found", e.getMessage());
     }
+
+    @ExceptionHandler(Throwable.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleThrowable(NotFoundException e) {
+        return new ErrorResponse("internal_server_error", e.getMessage());
+    }
 }
